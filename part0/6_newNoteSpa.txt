@@ -1,0 +1,25 @@
+note over browser:
+User writes some data into the 
+form's input field and submits it
+end note
+
+note over browser:
+Browser automatically generates timestamp, 
+packs input & timestamp as object and pushes
+it to the notes array as well as sending it
+to the server, marked as JSON file
+end note
+
+browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+
+note over server:
+server parses the data as described
+in the POST request's header
+end note
+
+server-->browser: HTTP 201 "created"
+
+note over browser:
+browser executes the event handler
+that renders notes to display
+end note
