@@ -1,6 +1,39 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 
+const Statistics = ({ good, bad, neutral }) => {
+  // Variables for statistic values
+  const totalClicks = good + neutral + bad;
+  let avgClicks;
+  let positiveClicks;
+  // Validate if output is numeral or NaN
+  if (totalClicks === 0) {
+    avgClicks = "";
+    positiveClicks = "";
+  } else {
+    avgClicks = (good - bad) / totalClicks;
+    positiveClicks = (good / totalClicks) * 100 + "%";
+  }
+
+  return (
+    <>
+      <h1>Statistics</h1>
+      Good: {good}
+      <br />
+      Neutral: {neutral}
+      <br />
+      Bad: {bad}
+      <br />
+      All: {totalClicks}
+      <br />
+      Average: {avgClicks}
+      <br />
+      Positive: {positiveClicks}
+      <br />
+    </>
+  );
+};
+
 const App = () => {
   // State initialization
   const [good, setGood] = useState(0);
@@ -18,30 +51,13 @@ const App = () => {
     setBad(bad + 1);
   };
 
-  const totalClicks = good + neutral + bad;
-  let avgClicks;
-  let positiveClicks;
-  if (totalClicks === 0) {
-    avgClicks = "";
-    positiveClicks = "";
-  } else {
-    avgClicks = (good - bad) / totalClicks;
-    positiveClicks = (good / totalClicks) * 100 + "%";
-  }
-
   return (
     <>
-      <h1>give feedback</h1>
+      <h1>Give Feedback</h1>
       <button onClick={() => onGoodClick()}>Good</button>
       <button onClick={() => onNeutralClick()}>Neutral</button>
       <button onClick={() => onBadClick()}>Bad</button>
-      <h1>statistics</h1>
-      <p>Good: {good}</p>
-      <p>Neutral: {neutral}</p>
-      <p>Bad: {bad}</p>
-      <p>All: {totalClicks}</p>
-      <p>Average: {avgClicks}</p>
-      <p>Positive: {positiveClicks}</p>
+      <Statistics good={good} neutral={neutral} bad={bad} />
     </>
   );
 };
