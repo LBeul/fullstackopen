@@ -4,34 +4,35 @@ import ReactDOM from "react-dom";
 const Statistics = ({ good, bad, neutral }) => {
   // Variables for statistic values
   const totalClicks = good + neutral + bad;
-  let avgClicks;
-  let positiveClicks;
-  // Validate if output is numeral or NaN
+  let avgClicks = (good - bad) / totalClicks;
+  let positiveClicks = (good / totalClicks) * 100 + "%";
+  // Validate if feedback was already given
   if (totalClicks === 0) {
-    avgClicks = "";
-    positiveClicks = "";
+    return (
+      <>
+        <h1>Statistics</h1>
+        <p>No feedback given</p>
+      </>
+    );
   } else {
-    avgClicks = (good - bad) / totalClicks;
-    positiveClicks = (good / totalClicks) * 100 + "%";
+    return (
+      <>
+        <h1>Statistics</h1>
+        Good: {good}
+        <br />
+        Neutral: {neutral}
+        <br />
+        Bad: {bad}
+        <br />
+        All: {totalClicks}
+        <br />
+        Average: {avgClicks}
+        <br />
+        Positive: {positiveClicks}
+        <br />
+      </>
+    );
   }
-
-  return (
-    <>
-      <h1>Statistics</h1>
-      Good: {good}
-      <br />
-      Neutral: {neutral}
-      <br />
-      Bad: {bad}
-      <br />
-      All: {totalClicks}
-      <br />
-      Average: {avgClicks}
-      <br />
-      Positive: {positiveClicks}
-      <br />
-    </>
-  );
 };
 
 const App = () => {
