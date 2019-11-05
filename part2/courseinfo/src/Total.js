@@ -1,11 +1,12 @@
 import React from "react";
 
-const Total = ({ listOfParts }) => {
-  const exercisesTotal =
-    listOfParts[0].exercises +
-    listOfParts[1].exercises +
-    listOfParts[2].exercises;
-  return <p>Number of Exercises {exercisesTotal}</p>;
+const Total = ({ partsList }) => {
+  const exercisesTotal = partsList
+    .map(element => element.exercises)
+    .reduce((accumulator, currentValue) => accumulator + currentValue);
+  return <p>Number of exercises {exercisesTotal}</p>;
+
+  // return <p>Number of Exercises {exercisesTotal}</p>;
 };
 
 export default Total;
