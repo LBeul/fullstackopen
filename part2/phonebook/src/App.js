@@ -13,12 +13,16 @@ const App = () => {
 
   const handleNameSubmit = event => {
     event.preventDefault();
-    const nameObject = {
-      name: newName,
-      id: newName
-    };
+    if (persons.filter(item => item.name === newName).length > 0) {
+      alert(`Sorry, but ${newName} is already added to phonebook.`);
+    } else {
+      const nameObject = {
+        name: newName,
+        id: newName
+      };
 
-    setPersons(persons.concat(nameObject));
+      setPersons(persons.concat(nameObject));
+    }
     setNewName("");
   };
 
