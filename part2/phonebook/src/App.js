@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 
+import EntryForm from "./Components/EntryForm";
+import ListOfEntries from "./Components/ListOfEntries";
+
 const App = () => {
   // Initilaize the component's state
   const [persons, setPersons] = useState([
@@ -57,27 +60,14 @@ const App = () => {
   return (
     <>
       <h2>Phonebook</h2>
-      <form>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit" onClick={handleFormSubmit}>
-            add
-          </button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      <ul>
-        {persons.map(person => (
-          <li key={person.name}>
-            <strong>{person.name}</strong> {person.number}
-          </li>
-        ))}
-      </ul>
+      <EntryForm
+        nameValue={newName}
+        nameChangeHandler={handleNameChange}
+        numberValue={newNumber}
+        numberChangeHandler={handleNumberChange}
+        submitHandler={handleFormSubmit}
+      />
+      <ListOfEntries list={persons} />
     </>
   );
 };
