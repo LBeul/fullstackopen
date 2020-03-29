@@ -1,15 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 import EntryForm from "./Components/EntryForm";
 import ListOfEntries from "./Components/ListOfEntries";
 
 const App = () => {
   // Initilaize the component's state
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "0170333555" }
-  ]);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
+
+  // Data fetch
+  useEffect(() => {
+    console.log("Effect");
+
+    axios.get("http://localhost:3001/persons").then(response => {
+      console.log("response fulfilled");
+      setPersons(response.data);
+    });
+  }, []);
+
+  // Log amount of persons to render
+  console.log(`Render ${persons.length} persons`);
 
   // Input handlers
   const handleNameChange = event => {
