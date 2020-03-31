@@ -14,26 +14,6 @@
       "name": "Dan Abramov",
       "number": "12-43-234345",
       "id": 3
-    },
-    {
-      "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
-      "id": 4
-    },
-    {
-      "name": "Harry Potter",
-      "number": "0150-996688",
-      "id": 5
-    },
-    {
-      "name": "Hermione Granger",
-      "number": "0100-9999887",
-      "id": 6
-    },
-    {
-      "name": "Ron Weasley",
-      "number": "0100-99009900",
-      "id": 7
     }
   ]
 }

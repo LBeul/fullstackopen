@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 // Import custom components
 import EntryForm from "./Components/EntryForm";
-import ListOfEntries from "./Components/ListOfEntries";
+import Entry from "./Components/Entry";
 
 // Import services
 import personService from "./services/persons";
@@ -69,6 +69,15 @@ const App = () => {
     setNewPerson({ name: "", number: "" });
   };
 
+  const deleteEntryOf = (id, name) => {
+    if (window.confirm(`Are you sure you want to delete ${name}?`)) {
+      personService.deleteItem(id).then(response => {
+        console.log(response);
+        setPersons(persons.filter(person => person.id !== id));
+      });
+    }
+  };
+
   // Render the app component
   return (
     <>
@@ -80,7 +89,15 @@ const App = () => {
         numberChangeHandler={handleNumberChange}
         submitHandler={handleFormSubmit}
       />
-      <ListOfEntries list={persons} />
+      <ul>
+        {persons.map(person => (
+          <Entry
+            key={person.id}
+            entry={person}
+            deleteEntry={() => deleteEntryOf(person.id, person.name)}
+          />
+        ))}
+      </ul>
     </>
   );
 };
