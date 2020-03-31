@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 
+// Import custom components
 import EntryForm from "./Components/EntryForm";
 import ListOfEntries from "./Components/ListOfEntries";
+
+// Import services
+import personService from "./services/persons";
 
 const App = () => {
   // Initilaize the component's state
@@ -11,11 +14,8 @@ const App = () => {
 
   // Data fetch
   useEffect(() => {
-    console.log("Effect");
-
-    axios.get("http://localhost:3001/persons").then(response => {
-      console.log("Response fulfilled");
-      setPersons(response.data);
+    personService.getAll().then(allPersons => {
+      setPersons(allPersons);
     });
   }, []);
 
@@ -53,13 +53,9 @@ const App = () => {
         number: newPerson.number
       };
       // ...post it to the server...
-      axios
-        .post("http://localhost:3001/persons", personObject)
-        .then(response => {
-          console.log(response);
-          //  ...and add it to the local state
-          setPersons(persons.concat(response.data));
-        });
+      personService.create(personObject).then(addedPerson => {
+        setPersons(persons.concat(addedPerson));
+      });
     } else if (!personIsUnique) {
       // Feedback if person already exists
       alert(`Sorry, but ${newPerson.name} is already added to phonebook.`);

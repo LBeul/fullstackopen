@@ -29,6 +29,11 @@
       "name": "Hermione Granger",
       "number": "0100-9999887",
       "id": 6
+    },
+    {
+      "name": "Ron Weasley",
+      "number": "0100-99009900",
+      "id": 7
     }
   ]
 }
