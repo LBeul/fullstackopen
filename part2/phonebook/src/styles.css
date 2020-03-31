@@ -1,0 +1,13 @@
+* {
+  font-family: sans-serif;
+}
+
+.success-message {
+  color: rgba(50, 205, 50, 1);
+  background: rgba(50, 205, 50, 0.1);
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}

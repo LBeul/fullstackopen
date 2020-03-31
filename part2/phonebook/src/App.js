@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import "./styles.css";
 
 // Import custom components
 import EntryForm from "./Components/EntryForm";
 import Entry from "./Components/Entry";
+import Notification from "./Components/Notification";
 
 // Import services
 import personService from "./services/persons";
@@ -11,6 +13,7 @@ const App = () => {
   // Initilaize the component's state
   const [persons, setPersons] = useState([]);
   const [newPerson, setNewPerson] = useState({ name: "", number: "" });
+  const [successMessage, setSuccessMessage] = useState(null);
 
   // Data fetch
   useEffect(() => {
@@ -18,9 +21,6 @@ const App = () => {
       setPersons(allPersons);
     });
   }, []);
-
-  // Log amount of persons to render
-  console.log(`There's a total of ${persons.length} persons`);
 
   // Handle name input
   const handleNameChange = event => {
@@ -56,6 +56,13 @@ const App = () => {
       personService.create(personObject).then(addedPerson => {
         setPersons(persons.concat(addedPerson));
       });
+      // Give some nice feedback
+      setSuccessMessage(
+        `${newPerson.name} with the number ${newPerson.number} was succesfully added!`
+      );
+      setTimeout(() => {
+        setSuccessMessage(null);
+      }, 5000);
     } else if (!personIsUnique) {
       // Feedback if person already exists
       alert(`Sorry, but ${newPerson.name} is already added to phonebook.`);
@@ -82,6 +89,7 @@ const App = () => {
   return (
     <>
       <h2>Phonebook</h2>
+      <Notification message={successMessage} />
       <EntryForm
         nameValue={newPerson.name}
         nameChangeHandler={handleNameChange}
@@ -89,6 +97,7 @@ const App = () => {
         numberChangeHandler={handleNumberChange}
         submitHandler={handleFormSubmit}
       />
+      <h3>Numbers</h3>
       <ul>
         {persons.map(person => (
           <Entry

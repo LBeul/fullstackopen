@@ -14,6 +14,21 @@
       "name": "Dan Abramov",
       "number": "12-43-234345",
       "id": 3
+    },
+    {
+      "name": "Harry Potter",
+      "number": "01805-66666",
+      "id": 4
+    },
+    {
+      "name": "Ron Weasley",
+      "number": "0900-77777",
+      "id": 5
+    },
+    {
+      "name": "Hermione Granger",
+      "number": "0850-555666",
+      "id": 6
     }
   ]
 }

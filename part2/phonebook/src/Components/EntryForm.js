@@ -3,7 +3,7 @@ import React from "react";
 const EntryForm = props => {
   return (
     <>
-      <h3>Add new entry:</h3>
+      <h3>Add new entry</h3>
       <form onSubmit={props.submitHandler}>
         <div>
           name:{" "}
