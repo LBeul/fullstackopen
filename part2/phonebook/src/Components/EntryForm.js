@@ -4,7 +4,7 @@ const EntryForm = props => {
   return (
     <>
       <h3>Add new entry:</h3>
-      <form>
+      <form onSubmit={props.submitHandler}>
         <div>
           name:{" "}
           <input value={props.nameValue} onChange={props.nameChangeHandler} />
@@ -17,9 +17,7 @@ const EntryForm = props => {
           />
         </div>
         <div>
-          <button type="submit" onClick={props.submitHandler}>
-            add
-          </button>
+          <button type="submit">add</button>
         </div>
       </form>
     </>

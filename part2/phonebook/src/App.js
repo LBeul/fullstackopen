@@ -7,31 +7,28 @@ import ListOfEntries from "./Components/ListOfEntries";
 const App = () => {
   // Initilaize the component's state
   const [persons, setPersons] = useState([]);
-  const [newName, setNewName] = useState("");
-  const [newNumber, setNewNumber] = useState("");
+  const [newPerson, setNewPerson] = useState({ name: "", number: "" });
 
   // Data fetch
   useEffect(() => {
     console.log("Effect");
 
     axios.get("http://localhost:3001/persons").then(response => {
-      console.log("response fulfilled");
+      console.log("Response fulfilled");
       setPersons(response.data);
     });
   }, []);
 
   // Log amount of persons to render
-  console.log(`Render ${persons.length} persons`);
+  console.log(`There's a total of ${persons.length} persons`);
 
-  // Input handlers
+  // Handle name input
   const handleNameChange = event => {
-    console.log("name:", event.target.value);
-    setNewName(event.target.value);
+    setNewPerson({ ...newPerson, name: event.target.value });
   };
-
+  // Handle number input
   const handleNumberChange = event => {
-    console.log("number:", event.target.value);
-    setNewNumber(event.target.value);
+    setNewPerson({ ...newPerson, number: event.target.value });
   };
 
   // Submit handler
@@ -39,33 +36,41 @@ const App = () => {
     event.preventDefault();
 
     // Check if unique
-    let personIsUnique = false;
-    let numberIsUnique = false;
-    if (persons.filter(item => item.name === newName).length === 0) {
+    let personIsUnique,
+      numberIsUnique = false;
+    if (!persons.find(item => item.name === newPerson.name)) {
       personIsUnique = true;
     }
-    if (persons.filter(item => item.number === newNumber).length === 0) {
+    if (!persons.find(item => item.number === newPerson.number)) {
       numberIsUnique = true;
     }
 
     // If person & number are unique...
     if (personIsUnique && numberIsUnique) {
-      // ...add the new person object
-      const nameObject = {
-        name: newName,
-        number: newNumber
+      // ...create new person Object,...
+      const personObject = {
+        name: newPerson.name,
+        number: newPerson.number
       };
-      setPersons(persons.concat(nameObject));
+      // ...post it to the server...
+      axios
+        .post("http://localhost:3001/persons", personObject)
+        .then(response => {
+          console.log(response);
+          //  ...and add it to the local state
+          setPersons(persons.concat(response.data));
+        });
     } else if (!personIsUnique) {
       // Feedback if person already exists
-      alert(`Sorry, but ${newName} is already added to phonebook.`);
+      alert(`Sorry, but ${newPerson.name} is already added to phonebook.`);
     } else if (!numberIsUnique) {
       // Feedback if number already exists
-      alert(`Sorry, but ${newNumber} is already assigned to someone else.`);
+      alert(
+        `Sorry, but ${newPerson.number} is already assigned to someone else.`
+      );
     }
-    // Clear inout fields afterwards
-    setNewName("");
-    setNewNumber("");
+    // Clear input fields afterwards
+    setNewPerson({ name: "", number: "" });
   };
 
   // Render the app component
@@ -73,9 +78,9 @@ const App = () => {
     <>
       <h2>Phonebook</h2>
       <EntryForm
-        nameValue={newName}
+        nameValue={newPerson.name}
         nameChangeHandler={handleNameChange}
-        numberValue={newNumber}
+        numberValue={newPerson.number}
         numberChangeHandler={handleNumberChange}
         submitHandler={handleFormSubmit}
       />
