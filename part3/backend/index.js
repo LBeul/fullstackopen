@@ -1,7 +1,9 @@
-// Import and initialize express
+// Import and initialize express & morgan
 const express = require("express");
+const morgan = require("morgan");
 const app = express();
 app.use(express.json());
+app.use(morgan("tiny"));
 
 // Persons data
 let persons = [
@@ -37,30 +39,21 @@ let persons = [
   },
 ];
 
-// Eventhandler for root route
-app.get("/", (req, res) => {
-  res.send("<h1>Phonebook API</h1>");
-});
-
 // Eventhandler for req all persons data
 app.get("/api/persons", (req, res) => {
-  console.log("GET '/api/persons'");
   res.json(persons);
 });
 
 // Event handler for req a single person
 app.get("/api/persons/:id", (req, res) => {
   const id = Number(req.params.id);
-  console.log(`GET '/api/persons/${id}'`);
   // Find requested person
   const requestedPerson = persons.find((person) => person.id === id);
   // Respond based on validity of given id
   if (requestedPerson) {
     res.json(requestedPerson);
-    console.log("--> OK: Responded with data");
   } else {
     res.status(404).end();
-    console.log("--> NOT OK: Responded 404");
   }
 });
 
@@ -71,7 +64,6 @@ const getRandomID = () => {
 
 // Eventhandler for adding a person
 app.post("/api/persons", (request, response) => {
-  console.log("POST item to '/api/persons'");
   const body = request.body;
 
   // Check if posted data is complete
@@ -85,7 +77,6 @@ app.post("/api/persons", (request, response) => {
   // Check if name isn't already in phonebook
 
   if (persons.find((person) => person.name === body.name)) {
-    console.log("--> NOT OK: Data duplicate");
     return response.status(400).json({ error: "Name is already in phonebook" });
   }
   // Create new Person based on posted data
@@ -96,7 +87,6 @@ app.post("/api/persons", (request, response) => {
   };
   // Add new person to phonebook
   persons = persons.concat(newPerson);
-  console.log(`--> OK: Dataset added with id #${newPerson.id}`);
   // Respond with person object
   response.json(newPerson);
 });
@@ -104,7 +94,6 @@ app.post("/api/persons", (request, response) => {
 // Eventhandler for deleting given person
 app.delete("/api/persons/:id", (request, response) => {
   const id = Number(request.params.id);
-  console.log(`DELETE '/api/persons/${id}'`);
   persons = persons.filter((person) => person.id !== id);
 
   response.status(204).end();
@@ -112,13 +101,18 @@ app.delete("/api/persons/:id", (request, response) => {
 
 // Eventhandler for req dataset info
 app.get("/info", (req, res) => {
-  console.log("Request to '/info'");
   const numOfPersons = persons.length;
   const timestamp = new Date();
   res.send(
     `<p>Phonebook has info for ${numOfPersons} people</p> <p>${timestamp}</p>`
   );
 });
+
+// Handle unknown route
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: "unknown endpoint" });
+};
+app.use(unknownEndpoint);
 
 // Tell server to listen to PORT
 const PORT = 3001;
