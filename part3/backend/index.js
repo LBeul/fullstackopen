@@ -36,22 +36,35 @@ let persons = [
   },
 ];
 
-// Event Handler for root route
+// Eventhandler for root route
 app.get("/", (req, res) => {
   res.send("<h1>Phonebook API</h1>");
 });
 
-// event handler for persons data
+// Eventhandler for req all persons data
 app.get("/api/persons", (req, res) => {
   console.log("Request to 'api/persons'");
   res.json(persons);
 });
 
+// Event handler for req a single person
+app.get("/api/persons/:id", (req, res) => {
+  const id = Number(req.params.id);
+  console.log(`Request to 'api/persons/${id}'`);
+
+  const requestedPerson = persons.find((person) => person.id === id);
+  if (requestedPerson) {
+    res.json(requestedPerson);
+  } else {
+    res.status(404).end();
+  }
+});
+
+// Eventhandler for req dataset info
 app.get("/info", (req, res) => {
   console.log("Request to '/info'");
   const numOfPersons = persons.length;
   const timestamp = new Date();
-
   res.send(
     `<p>Phonebook has info for ${numOfPersons} people</p> <p>${timestamp}</p>`
   );
