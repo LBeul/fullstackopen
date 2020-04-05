@@ -43,8 +43,18 @@ app.get("/", (req, res) => {
 
 // event handler for persons data
 app.get("/api/persons", (req, res) => {
-  console.log("Request to api/persons");
+  console.log("Request to 'api/persons'");
   res.json(persons);
+});
+
+app.get("/info", (req, res) => {
+  console.log("Request to '/info'");
+  const numOfPersons = persons.length;
+  const timestamp = new Date();
+
+  res.send(
+    `<p>Phonebook has info for ${numOfPersons} people</p> <p>${timestamp}</p>`
+  );
 });
 
 // Tell server to listen to PORT
