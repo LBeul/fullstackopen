@@ -1,6 +1,7 @@
 // Import and initialize express
 const express = require("express");
 const app = express();
+app.use(express.json());
 
 // Persons data
 let persons = [
@@ -43,21 +44,33 @@ app.get("/", (req, res) => {
 
 // Eventhandler for req all persons data
 app.get("/api/persons", (req, res) => {
-  console.log("Request to 'api/persons'");
+  console.log("GET '/api/persons'");
   res.json(persons);
 });
 
 // Event handler for req a single person
 app.get("/api/persons/:id", (req, res) => {
   const id = Number(req.params.id);
-  console.log(`Request to 'api/persons/${id}'`);
-
+  console.log(`GET '/api/persons/${id}'`);
+  // Find requested person
   const requestedPerson = persons.find((person) => person.id === id);
+  // Respond based on validity of given id
   if (requestedPerson) {
     res.json(requestedPerson);
+    console.log("--> OK: Responded with data");
   } else {
     res.status(404).end();
+    console.log("--> NOT OK: Responded 404");
   }
+});
+
+// Eventhandler for deleting given person
+app.delete("/api/persons/:id", (request, response) => {
+  const id = Number(request.params.id);
+  console.log(`DELETE '/api/persons/${id}'`);
+  persons = persons.filter((person) => person.id !== id);
+
+  response.status(204).end();
 });
 
 // Eventhandler for req dataset info
