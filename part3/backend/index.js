@@ -64,6 +64,43 @@ app.get("/api/persons/:id", (req, res) => {
   }
 });
 
+// Create a random ID
+const getRandomID = () => {
+  return Math.floor(Math.random() * 1000000);
+};
+
+// Eventhandler for adding a person
+app.post("/api/persons", (request, response) => {
+  console.log("POST item to '/api/persons'");
+  const body = request.body;
+
+  // Check if posted data is complete
+  if (!body.name || !body.number) {
+    console.log("--> NOT OK: Dataset incomplete");
+    return response
+      .status(400)
+      .json({ error: "Number and name are required!" });
+  }
+
+  // Check if name isn't already in phonebook
+
+  if (persons.find((person) => person.name === body.name)) {
+    console.log("--> NOT OK: Data duplicate");
+    return response.status(400).json({ error: "Already stored in phonebook" });
+  }
+  // Create new Person based on posted data
+  const newPerson = {
+    name: body.name,
+    number: body.number,
+    id: getRandomID(),
+  };
+  // Add new person to phonebook
+  persons = persons.concat(newPerson);
+  console.log(`--> OK: Dataset added with id #${newPerson.id}`);
+  // Respond with person object
+  response.json(newPerson);
+});
+
 // Eventhandler for deleting given person
 app.delete("/api/persons/:id", (request, response) => {
   const id = Number(request.params.id);
