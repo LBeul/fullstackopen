@@ -86,7 +86,7 @@ app.post("/api/persons", (request, response) => {
 
   if (persons.find((person) => person.name === body.name)) {
     console.log("--> NOT OK: Data duplicate");
-    return response.status(400).json({ error: "Already stored in phonebook" });
+    return response.status(400).json({ error: "Name is already in phonebook" });
   }
   // Create new Person based on posted data
   const newPerson = {
